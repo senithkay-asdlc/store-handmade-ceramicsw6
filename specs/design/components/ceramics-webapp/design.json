@@ -1,0 +1,48 @@
+{
+  "name": "ceramics-webapp",
+  "type": "web-application",
+  "version": "0.1.0",
+  "language": "TypeScript",
+  "buildpack": "docker",
+  "appPath": "ceramics-webapp",
+  "entrypoint": "deployment/web-application",
+  "exposure": "internet",
+  "stories": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "dependencies": [
+    {
+      "description": "Backend API for the catalog, cart, checkout, and order/product management.",
+      "kind": "component",
+      "name": "ceramics-api"
+    },
+    {
+      "description": "Thunder-backed OIDC sign-in for shoppers (optional) and the Store Admin (required for the admin area).",
+      "kind": "platform-resource",
+      "name": "user-auth",
+      "parameters": {
+        "scopes": "openid profile email"
+      },
+      "resourceType": "thunder-app"
+    }
+  ],
+  "description": "React SPA serving both the public storefront (catalog browse/search, product detail, cart, guest or signed-in checkout, order history) and the Store Admin area (listing management, order queue and fulfillment) behind role-gated routes. Talks only to ceramics-api; holds no secrets and performs no payment processing itself — checkout collects card details through the payment provider's hosted/embedded element.",
+  "skillsPinned": [
+    "wireframes",
+    "react-webapp",
+    "thunder-authentication"
+  ]
+}

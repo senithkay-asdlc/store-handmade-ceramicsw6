@@ -1,0 +1,84 @@
+{
+  "name": "ceramics-api",
+  "type": "service",
+  "version": "0.1.0",
+  "language": "Ballerina",
+  "buildpack": "docker",
+  "appPath": "ceramics-api",
+  "entrypoint": "deployment/service",
+  "exposure": "internet",
+  "stories": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "dependencies": [
+    {
+      "description": "Stores products, carts, orders, and order items.",
+      "kind": "platform-resource",
+      "name": "ceramics-db",
+      "resourceType": "postgres"
+    },
+    {
+      "description": "Validates the caller's bearer token and resolves their role (Shopper vs Store Admin) for every protected operation.",
+      "kind": "platform-resource",
+      "name": "user-auth",
+      "parameters": {
+        "scopes": "openid profile email"
+      },
+      "resourceType": "thunder-app"
+    },
+    {
+      "config": [
+        {
+          "description": "Stripe secret API key used to charge the shopper's card at checkout.",
+          "key": "STRIPE_API_KEY",
+          "secret": true
+        }
+      ],
+      "description": "Charges the shopper's card during checkout via Stripe's REST API; the store never stores raw card numbers.",
+      "kind": "external",
+      "name": "stripe",
+      "specPath": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.yaml",
+      "style": "rest-api"
+    },
+    {
+      "candidates": [
+        {
+          "name": "sendgrid",
+          "package": "ballerina:sendgrid",
+          "style": "sdk"
+        },
+        {
+          "name": "resend",
+          "style": "rest-api"
+        },
+        {
+          "name": "postmark",
+          "style": "rest-api"
+        }
+      ],
+      "description": "Sends the order-confirmation email after a successful checkout. No specific transactional-email vendor is named in the requirements.",
+      "kind": "external",
+      "name": "email-provider"
+    }
+  ],
+  "description": "Ballerina service owning the product catalog, cart, checkout, and order lifecycle. Marks a product sold and delists it the instant it's purchased, charges the card via the payment provider, and sends the order-confirmation email. Enforces that only the Store Admin role can manage listings or update order status, and that a shopper can only see their own orders. Does not handle sign-in itself (delegates to Thunder) and does not integrate with any shipping carrier.",
+  "skillsPinned": [
+    "openapi-conventions",
+    "ballerina",
+    "api-management",
+    "thunder-authentication"
+  ]
+}
