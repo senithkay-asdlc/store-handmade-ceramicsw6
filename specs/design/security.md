@@ -27,3 +27,4 @@ with `403`. A request to a Shopper-only owned resource (e.g. another
 shopper's order) is denied with `403` even for a signed-in Shopper.
 - Guest checkout and public catalog reads perform no role check at all — they
 are open by design.
+
