@@ -54,24 +54,22 @@
       "style": "rest-api"
     },
     {
-      "candidates": [
+      "config": [
         {
-          "name": "sendgrid",
-          "package": "ballerina:sendgrid",
-          "style": "sdk"
+          "description": "SendGrid API key used to send transactional email",
+          "key": "SENDGRID_API_KEY",
+          "secret": true
         },
         {
-          "name": "resend",
-          "style": "rest-api"
-        },
-        {
-          "name": "postmark",
-          "style": "rest-api"
+          "description": "Verified sender address order confirmations are sent from",
+          "key": "SENDGRID_FROM_EMAIL"
         }
       ],
-      "description": "Sends the order-confirmation email after a successful checkout. No specific transactional-email vendor is named in the requirements.",
+      "description": "Sends the order-confirmation email via SendGrid's Mail Send API after a successful checkout.",
       "kind": "external",
-      "name": "email-provider"
+      "name": "email-provider",
+      "specPath": "https://raw.githubusercontent.com/twilio/sendgrid-oai/main/spec/json/tsg_mail_v3.json",
+      "style": "rest-api"
     }
   ],
   "description": "Ballerina service owning the product catalog, cart, checkout, and order lifecycle. Marks a product sold and delists it the instant it's purchased, charges the card via the payment provider, and sends the order-confirmation email. Enforces that only the Store Admin role can manage listings or update order status, and that a shopper can only see their own orders. Does not handle sign-in itself (delegates to Thunder) and does not integrate with any shipping carrier.",
